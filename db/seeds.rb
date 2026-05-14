@@ -3,6 +3,34 @@ Appointment.destroy_all
 Pet.destroy_all
 Vet.destroy_all
 Owner.destroy_all
+User.destroy_all
+
+User.create!(
+  first_name: "Admin",
+  last_name: "User",
+  email: "admin@vetclinic.com",
+  password: "password123",
+  password_confirmation: "password123",
+  role: :admin
+)
+
+User.create!(
+  first_name: "Ana",
+  last_name: "Garcia",
+  email: "vet@vetclinic.com",
+  password: "password123",
+  password_confirmation: "password123",
+  role: :vet
+)
+
+User.create!(
+  first_name: "Martin",
+  last_name: "Karl",
+  email: "owner@vetclinic.com",
+  password: "password123",
+  password_confirmation: "password123",
+  role: :owner
+)
 
 owner1 = Owner.create!(
   first_name: "Martin",
@@ -53,6 +81,10 @@ pet1 = Pet.create!(
   weight: 28.5
 )
 
+photo1_path = Rails.root.join("db/seeds/pets/dog.jpg")
+if File.exist?(photo1_path)
+  pet1.photo.attach(io: File.open(photo1_path), filename: "dog.jpg", content_type: "image/jpeg")
+end
 
 pet2 = Pet.create!(
   owner: owner1,
@@ -65,11 +97,7 @@ pet2 = Pet.create!(
 
 photo2_path = Rails.root.join("db/seeds/pets/cat.jpg")
 if File.exist?(photo2_path)
-  pet2.photo.attach(
-    io: File.open(photo2_path),
-    filename: "cat.jpg",
-    content_type: "image/jpeg"
-  )
+  pet2.photo.attach(io: File.open(photo2_path), filename: "cat.jpg", content_type: "image/jpeg")
 end
 
 pet3 = Pet.create!(
@@ -83,11 +111,7 @@ pet3 = Pet.create!(
 
 photo3_path = Rails.root.join("db/seeds/pets/rabbit.jpg")
 if File.exist?(photo3_path)
-  pet3.photo.attach(
-    io: File.open(photo3_path),
-    filename: "rabbit.jpg",
-    content_type: "image/jpeg"
-  )
+  pet3.photo.attach(io: File.open(photo3_path), filename: "rabbit.jpg", content_type: "image/jpeg")
 end
 
 pet4 = Pet.create!(
@@ -101,11 +125,7 @@ pet4 = Pet.create!(
 
 photo4_path = Rails.root.join("db/seeds/pets/dog.jpg")
 if File.exist?(photo4_path)
-  pet4.photo.attach(
-    io: File.open(photo4_path),
-    filename: "dog.jpg",
-    content_type: "image/jpeg"
-  )
+  pet4.photo.attach(io: File.open(photo4_path), filename: "dog.jpg", content_type: "image/jpeg")
 end
 
 pet5 = Pet.create!(
@@ -117,48 +137,41 @@ pet5 = Pet.create!(
   weight: 3.9
 )
 
-# Create Appointments
 appointment1 = Appointment.create!(
-  pet: pet1,
-  vet: vet1,
+  pet: pet1, vet: vet1,
   date: DateTime.now + 3,
   reason: "Annual checkup",
   status: :scheduled
 )
 
 appointment2 = Appointment.create!(
-  pet: pet2,
-  vet: vet1,
+  pet: pet2, vet: vet1,
   date: DateTime.now - 1,
   reason: "Vaccination",
   status: :completed
 )
 
 appointment3 = Appointment.create!(
-  pet: pet3,
-  vet: vet2,
+  pet: pet3, vet: vet2,
   date: DateTime.now,
   reason: "Dental cleaning",
   status: :in_progress
 )
 
 appointment4 = Appointment.create!(
-  pet: pet4,
-  vet: vet2,
+  pet: pet4, vet: vet2,
   date: DateTime.now - 7,
   reason: "Leg injury",
   status: :completed
 )
 
 appointment5 = Appointment.create!(
-  pet: pet5,
-  vet: vet1,
+  pet: pet5, vet: vet1,
   date: DateTime.now + 7,
   reason: "Skin irritation",
   status: :cancelled
 )
 
-# Create Treatments with rich text clinical notes
 Treatment.create!(
   appointment: appointment2,
   name: "Vaccination",
@@ -205,6 +218,7 @@ Treatment.create!(
 )
 
 puts "Seed data created successfully!"
+puts "#{User.count} users"
 puts "#{Owner.count} owners"
 puts "#{Vet.count} vets"
 puts "#{Pet.count} pets"
